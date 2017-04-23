@@ -1,0 +1,11 @@
+# folders
+
+node_modules
+
+# types
+
+*.log
+
+# files
+
+.DS_Store

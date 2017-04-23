@@ -1,0 +1,18 @@
+{
+  "name": "databases-final-project",
+  "version": "1.0.0",
+  "description": "CSE 385 Final Project",
+  "author": "Group C-5",
+  "license": "MIT",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GrantEaton/databases_final_project.git"
+  },
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
