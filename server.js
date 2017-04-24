@@ -10,7 +10,29 @@ app.get('/', (req, res) => {
 
   res.render('home', {
 
-    topics: ['General', 'Sports', 'Programming', 'Cooking']
+    topics: [
+
+      {
+        id: 0,
+        name: 'General'
+      },
+
+      {
+        id: 1,
+        name: 'Programming'
+      },
+
+      {
+        id: 2,
+        name: 'Sports'
+      },
+
+      {
+        id: 3,
+        name: 'Cooking'
+      }
+
+    ]
 
   });
 

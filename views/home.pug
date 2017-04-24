@@ -4,10 +4,11 @@ block content
         
   each topic in topics
     .panel.panel-default
-      .panel-heading #{topic}
+      .panel-heading
+        a(href='/topic/'+topic.id) #{topic.name}
       .list-group
         each val in [1, 2, 3]
-          .list-group-item
+          a.list-group-item(href='/topic/'+topic.id+'/post/1')
             h4.list-group-item-heading Post title goes here
             p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
               

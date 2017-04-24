@@ -4,28 +4,28 @@ block content
   
   ol.breadcrumb
     li
-      a(href="/") Home
+      a(href='/') Home
     li.active #{topic.name}
     
-  .panel.panel-default
+  .panel.panel-success
     .panel-heading Stickied Posts
     .list-group
       each val in [1, 2]
-        .list-group-item
+        a.list-group-item(href='/topic/'+topic.id+'/post/1')
           h4.list-group-item-heading Post title goes here
           p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             
-  .panel.panel-default
+  .panel.panel-info
     .panel-heading Active Posts
     .list-group
       each val in [1, 2, 3]
-        .list-group-item
+        a.list-group-item(href='/topic/'+topic.id+'/post/1')
           h4.list-group-item-heading Post title goes here
           p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
   
   .list-group
     each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      .list-group-item
+      a.list-group-item(href='/topic/'+topic.id+'/post/1')
         h4.list-group-item-heading Post title goes here
         p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           
