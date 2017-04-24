@@ -16,6 +16,52 @@ app.get('/', (req, res) => {
 
 });
 
+app.get('/topic/:topic', (req, res) => {
+
+  res.render('topic', {
+
+    topic: {
+
+      id: req.params.topic,
+
+      name: 'General'
+
+    }
+
+  });
+
+});
+
+app.get('/topic/:topic/post/:post', (req, res) => {
+
+  res.render('post', {
+
+    topic: {
+
+      id: req.params.topic,
+
+      name: 'General'
+
+    },
+
+    post: {
+
+      id: req.params.post,
+
+      name: 'Post title goes here'
+
+    }
+
+  });
+
+});
+
+app.get('*', (req, res) => {
+
+  res.redirect('/');
+
+});
+
 let server = app.listen(8000, () => {
 
   console.log('server running at http://localhost:8000');
