@@ -13,6 +13,8 @@
     "url": "git+https://github.com/GrantEaton/databases_final_project.git"
   },
   "dependencies": {
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "mssql": "^4.0.2",
+    "pug": "^2.0.0-beta.12"
   }
 }
