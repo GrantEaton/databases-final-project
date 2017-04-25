@@ -12,6 +12,32 @@ function getTopics() {
 
 }
 
+function getTopic(id) {
+
+  return new Promise((resolve, reject) => {
+
+    let topic = topics.find(({topic_id}) => topic_id == id);
+
+    if (!topic) reject('topic not found');
+
+    else resolve(topic);
+
+  });
+
+}
+
+function getPostsByTopic(id) {
+
+  return new Promise((resolve, reject) => {
+
+    let filtered = posts.filter(post => post.topic_id == id);
+
+    resolve(filtered);
+
+  });
+
+}
+
 function getNewestPostsByTopic(id, limit) {
 
   return new Promise((resolve, reject) => {
@@ -27,4 +53,4 @@ function getNewestPostsByTopic(id, limit) {
 
 }
 
-module.exports = {getTopics, getNewestPostsByTopic};
+module.exports = {getTopics, getTopic, getPostsByTopic, getNewestPostsByTopic};

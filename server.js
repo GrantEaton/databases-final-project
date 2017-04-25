@@ -31,17 +31,30 @@ app.get('/', (req, res) => {
 
 app.get('/topic/:topic', (req, res) => {
 
-  res.render('topic', {
+  let id = req.params.topic;
 
-    topic: {
+  let payload = {};
 
-      id: req.params.topic,
+  api.getTopic(id)
+    .then(topic => {
 
-      name: 'General'
+      payload.topic = topic;
 
-    }
+      return api.getPostsByTopic(id);
 
-  });
+    })
+    .then(posts => {
+
+      payload.posts = posts;
+
+      res.render('topic', payload);
+
+    })
+    .catch(message => {
+
+      res.render('not-found', {message});
+
+    });
 
 });
 
