@@ -60,25 +60,21 @@ app.get('/topic/:topic', (req, res) => {
 
 app.get('/topic/:topic/post/:post', (req, res) => {
 
-  res.render('post', {
+  let topicId = req.params.topic;
 
-    topic: {
+  let postId = req.params.post;
 
-      id: req.params.topic,
+  api.getPost(topicId, postId)
+    .then(({topic, post}) => {
 
-      name: 'General'
+      res.render('post', {topic, post});
 
-    },
+    })
+    .catch(message => {
 
-    post: {
+      res.render('not-found', {message})
 
-      id: req.params.post,
-
-      name: 'Post title goes here'
-
-    }
-
-  });
+    });
 
 });
 
