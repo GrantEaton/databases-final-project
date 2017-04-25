@@ -8,7 +8,7 @@ block content
         a(href='/topic/'+topic.topic_id) #{topic.topic_name}
       .list-group
         each post in topic.posts
-          a.list-group-item(href='/topic/'+topic.topic_id+'/post/1')
+          a.list-group-item(href='/topic/'+topic.topic_id+'/post/'+post.post_id)
             h4.list-group-item-heading #{post.post_title}
             p.list-group-item-text #{post.post_text.substring(0, 100)}...
               
