@@ -80,7 +80,7 @@ app.get('/topic/:topic/post/:post', (req, res) => {
 
 app.get('*', (req, res) => {
 
-  res.redirect('/');
+  res.render('not-found', {message: 'page not found'});
 
 });
 
