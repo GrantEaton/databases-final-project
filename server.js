@@ -84,8 +84,10 @@ app.get('*', (req, res) => {
 
 });
 
-let server = app.listen(8000, () => {
+let port = process.env.PORT || 8000;
 
-  console.log('server running at http://localhost:8000');
+let server = app.listen(port, () => {
+
+  console.log('server running at http://localhost:'+port);
 
 });
