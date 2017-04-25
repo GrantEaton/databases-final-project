@@ -1,6 +1,8 @@
 const path = require('path');
 const express = require('express');
 
+const api = require('./api/api');
+
 let app = express();
 
 app.set('view engine', 'pug');
@@ -8,31 +10,20 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
 
-  res.render('home', {
+  api.getTopics().then(topics => {
 
-    topics: [
+    Promise.all(topics.map(topic => api.getNewestPostsByTopic(topic.topic_id, 3)))
+      .then(posts => {
 
-      {
-        id: 0,
-        name: 'General'
-      },
+        for (let i in topics) {
 
-      {
-        id: 1,
-        name: 'Programming'
-      },
+          topics[i].posts = posts[i];
 
-      {
-        id: 2,
-        name: 'Sports'
-      },
+        }
 
-      {
-        id: 3,
-        name: 'Cooking'
-      }
+        res.render('home', {topics});
 
-    ]
+      });
 
   });
 
