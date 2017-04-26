@@ -10,20 +10,9 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
 
-  api.getTopics().then(topics => {
+  api.getActivePosts(20).then(posts => {
 
-    Promise.all(topics.map(topic => api.getNewestPostsByTopic(topic.topic_id, 3)))
-      .then(posts => {
-
-        for (let i in topics) {
-
-          topics[i].posts = posts[i];
-
-        }
-
-        res.render('home', {topics});
-
-      });
+    res.render('home', {posts});
 
   });
 

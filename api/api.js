@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const users = require('../mock/users.json');
 const topics = require('../mock/topics.json');
 const posts = require('../mock/posts.json');
@@ -36,39 +38,51 @@ function getPost(topicId, postId) {
 
     let post = posts.find(({post_id}) => post_id == postId);
 
-    if (!post) reject('post not found');
+    if (!post || post.topic_id != topic.topic_id) {
 
-    else resolve({topic, post});
+      reject('post not found');
 
-  });
+    }
 
-}
+    else {
 
-function getPostsByTopic(id) {
+      post = Object.assign({}, post, {date_created: moment.unix(post.date_created)});
 
-  return new Promise((resolve, reject) => {
+      resolve({topic, post});
 
-    let filtered = posts.filter(post => post.topic_id == id);
-
-    resolve(filtered);
+    }
 
   });
 
 }
 
-function getNewestPostsByTopic(id, limit) {
+function getActivePosts(limit) {
 
   return new Promise((resolve, reject) => {
 
-    let active = posts
+    resolve(posts
+      .sort((a, b) => b.date_created - a.date_created)
+      .slice(0, limit)
+      .map(post => Object.assign({}, post, {date_created: moment.unix(post.date_created)}))
+    );
+
+  });
+
+}
+
+function getPostsByTopic(id, limit) {
+
+  return new Promise((resolve, reject) => {
+
+    resolve(posts
       .filter(post => post.topic_id == id)
-      .sort((a, b) => a.date_created - b.date_created)
-      .slice(0, limit);
-
-    resolve(active);
+      .sort((a, b) => b.date_created - a.date_created)
+      .slice(0, limit)
+      .map(post => Object.assign({}, post, {date_created: moment.unix(post.date_created)}))
+    );
 
   });
 
 }
 
-module.exports = {getTopics, getTopic, getPost, getPostsByTopic, getNewestPostsByTopic};
+module.exports = {getTopics, getTopic, getPost, getActivePosts, getPostsByTopic};

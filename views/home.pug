@@ -1,14 +1,13 @@
 extends layout.pug
 
 block content
-        
-  each topic in topics
-    .panel.panel-default
-      .panel-heading
-        a(href='/topic/'+topic.topic_id) #{topic.topic_name}
-      .list-group
-        each post in topic.posts
-          a.list-group-item(href='/topic/'+topic.topic_id+'/post/'+post.post_id)
-            h4.list-group-item-heading #{post.post_title}
-            p.list-group-item-text #{post.post_text.substring(0, 100)}...
+  .list-group
+    each post in posts
+      .list-group-item
+        a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) #{post.post_title}
+        p.list-group-item-text #{post.post_text.substring(0, 100)}...
+        p.list-group-item-text 
+          | username &middot; #{post.date_created.fromNow()} in 
+          a(href='/topic/'+post.topic_id) topic 
+          | &middot; 33 replies
               
