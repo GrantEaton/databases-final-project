@@ -1,4 +1,35 @@
 extends layout.pug
 
 block content
-  h4 Profile
+  
+  .container
+    
+    .panel.panel-default
+      .panel-heading User Information
+      .panel-body
+        .row
+          .col-xs-3
+            img.img-circle(src='https://placehold.it/128x128')
+          .col-xs-3
+            h4 Username
+            p Username
+          .col-xs-3
+            h4 Member Since
+            p April 24, 2017
+    
+    .panel.panel-default
+      .panel-heading Topics Created
+      .list-group
+        each val in [1, 2, 3]
+          a.list-group-item(href='/topic/1')
+            h4.list-group-item-heading Topic name goes here
+            p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore...
+
+
+    .panel.panel-default
+      .panel-heading Recent Posts
+      .list-group
+        each val in [1, 2, 3, 4, 5]
+          a.list-group-item(href='/topic/1/post/1')
+            h4.list-group-item-heading Post title goes here
+            p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore...

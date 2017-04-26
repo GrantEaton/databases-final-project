@@ -1,4 +1,15 @@
 extends layout.pug
 
 block content
-  h4 Messages
+  .container
+    button.btn.btn-primary.pull-right Create Message
+    h2 Messages
+    .list-group
+      each val in [1,2,3,4,5,6,7,8,9,10]
+        a.list-group-item(href="/inbox/1")
+          h4.list-group-item-heading Message subject goes here
+          p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat...
+      ul.pagination.center-block
+        each page in [1,2,3,4]
+          li
+            a(href='?page='+page) #{page}
