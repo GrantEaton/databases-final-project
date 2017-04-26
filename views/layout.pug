@@ -10,7 +10,7 @@ html
           a.navbar-brand(href='/') Awesome Forum
         ul.nav.navbar-nav.navbar-right
           li.dropdown
-            a.dropdown-toggle(href='#', data-toggle='dropdown') username
+            a.dropdown-toggle(href='#', data-toggle='dropdown') username 
               span.caret
             ul.dropdown-menu
               li
@@ -18,7 +18,8 @@ html
                 a(href='/inbox') Inbox
                 a(href='/login') Log out
           li
-            img.img-circle(src='https://placehold.it/32x32',style='padding: 9px')
+            - let colors = ['f44336','E91E63','9C27B0','673AB7','3F51B5','2196F3','009688']
+            img.img-circle(src='https://placehold.it/32/'+colors[0]+'/fff?text='+'U',style='padding: 9px')
     .container-fluid
       block content
     script(src='https://code.jquery.com/jquery-3.2.1.min.js')

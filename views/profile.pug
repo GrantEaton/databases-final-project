@@ -2,20 +2,25 @@ extends layout.pug
 
 block content
   
+  - let colors = ['f44336','E91E63','9C27B0','673AB7','3F51B5','2196F3','009688']
+  
   .container
     
     .panel.panel-default
       .panel-heading User Information
       .panel-body
         .row
-          .col-xs-3
-            img.img-circle(src='https://placehold.it/128x128')
-          .col-xs-3
-            h4 Username
-            p Username
-          .col-xs-3
-            h4 Member Since
-            p April 24, 2017
+          .col-xs-2
+            img.img-circle.center-block(src='https://placehold.it/128/'+colors[0]+'/fff?text='+'U')
+          .col-xs-10
+            form
+              .form-group
+                label Username
+                input(disabled, value='username').form-control
+              .form-group
+                label Email Address
+                input(disabled, value='username@mail.com').form-control
+              button.btn.btn-primary Change Password
     
     .panel.panel-default
       .panel-heading Topics Created
