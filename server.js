@@ -78,6 +78,24 @@ app.get('/topic/:topic/post/:post', (req, res) => {
 
 });
 
+app.get('/login', (req, res) => {
+
+  res.render('login');
+
+});
+
+app.get('/profile', (req, res) => {
+
+  res.render('profile');
+
+});
+
+app.get('/inbox', (req, res) => {
+
+  res.render('inbox');
+
+});
+
 app.get('*', (req, res) => {
 
   res.render('not-found', {message: 'page not found'});

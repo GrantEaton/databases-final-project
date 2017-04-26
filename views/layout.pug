@@ -14,8 +14,11 @@ html
               span.caret
             ul.dropdown-menu
               li
-                a Profile
-                a Log out
+                a(href='/profile') Profile
+                a(href='/inbox') Inbox
+                a(href='/login') Log out
+          li
+            img.img-circle(src='https://placehold.it/32x32',style='padding: 9px')
     .container-fluid
       block content
     script(src='https://code.jquery.com/jquery-3.2.1.min.js')
