@@ -1,13 +1,14 @@
 extends layout.pug
 
 block content
-  .list-group
-    each post in posts
-      .list-group-item
-        a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) #{post.post_title}
-        p.list-group-item-text #{post.post_text.substring(0, 100)}...
-        p.list-group-item-text 
-          | username &middot; #{post.date_created.fromNow()} in 
-          a(href='/topic/'+post.topic_id) topic 
-          | &middot; 33 replies
+  .container
+    .list-group
+      each post in posts
+        .list-group-item
+          a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) #{post.post_title}
+          p.list-group-item-text #{post.post_text.substring(0, 100)}...
+          p.list-group-item-text 
+            | username &middot; #{post.date_created.fromNow()} in 
+            a(href='/topic/'+post.topic_id) topic 
+            | &middot; 33 replies
               
