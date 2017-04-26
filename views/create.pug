@@ -1,0 +1,33 @@
+extends layout.pug
+
+block content
+  .container
+    ul.nav.nav-tabs
+      li(class=(type == 'post') ? 'active' : '')
+        a(href='?type=post') Post
+      li(class=(type == 'topic') ? 'active' : '')
+        a(href='?type=topic') Topic
+        
+    if type == 'post'
+      h3 Create a post
+      form
+        .form-group
+          label Topic
+          input.form-control(value=topic)
+        .form-group
+          label Subject
+          input.form-control
+        .form-group
+          label Text
+          textarea.form-control(rows='10')
+        button.btn.btn-primary Create Post
+    else if type == 'topic'
+      h3 Create a topic
+      form
+        .form-group
+          label Name
+          input.form-control(value=topic)
+        .form-group
+          label Description
+          textarea.form-control(rows='10')
+        button.btn.btn-primary Create Topic

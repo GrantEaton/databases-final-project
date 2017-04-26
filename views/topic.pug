@@ -2,24 +2,35 @@ extends layout.pug
 
 block content
   
-  ol.breadcrumb
-    li
-      a(href='/') Home
-    li.active #{topic.topic_name}
-    
-  .panel.panel-success
-    .panel-heading Stickied Posts
-    .list-group
-      each val in [1, 2]
-        a.list-group-item(href='/topic/'+topic.id+'/post/1')
-          h4.list-group-item-heading Post title goes here
-          p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore...
-
-  .list-group
-    each post in posts
-      a.list-group-item(href='/topic/'+post.topic_id+'/post/'+post.post_id)
-        h4.list-group-item-heading #{post.post_title}
-        p.list-group-item-text #{post.post_text.substring(0, 100)}...
-          
-
+  .container
+  
+    ol.breadcrumb
+      li
+        a(href='/') Home
+      li.active #{topic.topic_name}
       
+    .row
+      
+      .col-md-8
+        .panel.panel-success
+          .panel-heading Stickied Posts
+          .list-group
+            each val in [1, 2]
+              a.list-group-item(href='/topic/'+topic.id+'/post/1')
+                h4.list-group-item-heading Post title goes here
+                p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore...
+        .list-group
+          each post in posts
+            a.list-group-item(href='/topic/'+post.topic_id+'/post/'+post.post_id)
+              h4.list-group-item-heading #{post.post_title}
+              p.list-group-item-text #{post.post_text.substring(0, 100)}...
+      
+      .col-md-4
+        .panel.panel-info
+          .panel-heading Topic Information
+          .panel-body
+            a.btn.btn-primary.btn-block(role='button', href='/create?type=post&topic='+topic.topic_name) Create a post in #{topic.topic_name}
+            h3 #{topic.topic_name}
+            p Created on #{topic.date_created} by #{topic.topic_creator}
+            p #{topic.topic_description}
+            a.btn.btn-default.btn-block(role='button', href='/create?type=topic') Create your own topic

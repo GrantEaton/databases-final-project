@@ -85,6 +85,28 @@ app.get('/inbox', (req, res) => {
 
 });
 
+app.get('/create', (req, res) => {
+
+  res.render('create', {
+
+    type: req.query.type || 'post',
+
+    topic: req.query.topic || ''
+
+  });
+
+});
+
+app.get('/create', (req, res) => {
+
+  res.render('create', {
+
+    type: req.query.type || 'post'
+
+  });
+
+});
+
 app.get('*', (req, res) => {
 
   res.render('not-found', {message: 'page not found'});
