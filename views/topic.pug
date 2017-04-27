@@ -7,7 +7,7 @@ block content
     ol.breadcrumb
       li
         a(href='/') Home
-      li.active #{topic.topic_name}
+      li.active(style='padding-left: 5px') #{topic.topic_name}
       
     .row
       
@@ -15,18 +15,14 @@ block content
         .panel.panel-success
           .panel-heading Stickied Posts
           .list-group
-            each val in [1, 2]
-              a.list-group-item(href='/topic/'+topic.id+'/post/1')
-                h4.list-group-item-heading Post title goes here
-                p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore...
+            each post in posts.slice(0, 2)
+              +post(post)
         .list-group
           each post in posts
-            a.list-group-item(href='/topic/'+post.topic_id+'/post/'+post.post_id)
-              h4.list-group-item-heading #{post.post_title}
-              p.list-group-item-text #{post.post_text.substring(0, 100)}...
+            +post(post)
       
       .col-md-4
-        .panel.panel-info
+        .panel.panel-default
           .panel-heading Topic Information
           .panel-body
             a.btn.btn-primary.btn-block(role='button', href='/create?type=post&topic='+topic.topic_name) Create a post in #{topic.topic_name}

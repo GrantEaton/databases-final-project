@@ -2,31 +2,28 @@ extends layout.pug
 
 block content
   .container
+
+    ul.nav.nav-tabs
+      li.active
+        a(href='?folder=inbox') Inbox
+      li
+        a(href='?folder=sent') Sent
+      li
+        a(href='?folder=archive') Archive
+      a.btn.btn-primary.pull-right(href='/create?type=message') Send Message
+        
+    br
+    
+    .list-group
+      each val in [1,2,3,4,5,6,7,8,9,10]
+        a.list-group-item(href="/inbox/1")
+          h4.list-group-item-heading Message subject goes here
+          p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat...
+        
     .row
-      .col-md-8
-        .panel.panel-default
-          .panel-heading Messages
-          .list-group
-            each val in [1,2,3,4,5,6,7,8,9,10]
-              a.list-group-item(href="/inbox/1")
-                h4.list-group-item-heading Message subject goes here
-                p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat...
-      .col-md-4
-        .panel.panel-default
-          .panel-heading Inbox Information
-          .panel-body
-            button.btn.btn-primary.btn-block Send a message
-            h4 Messages Received
-            p 34
-            h4 Last Message Received
-            p April 24, 2017
-            h4 Most Common Recipient
-            p username
-            h4 Most Common Sender
-            p someone else
-            
-    ul.pagination.center-block
-        each page in [1,2,3,4]
-          li
-            a(href='?page='+page) #{page}
+      .col-xs-4.col-xs-offset-4
+        ul.pagination.center-block
+            each page in [1,2,3,4]
+              li
+                a(href='?page='+page) #{page}
   

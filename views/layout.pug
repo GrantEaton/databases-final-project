@@ -1,3 +1,12 @@
+mixin post(post)
+  .list-group-item
+    a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) 
+      strong #{post.post_title}
+    p.list-group-item-text 
+      | username &middot; #{post.date_created ? post.date_created.fromNow() : 'now'} in 
+      a(href='/topic/'+post.topic_id) topic 
+      | &middot; 33 replies
+
 html
   head
     title Awesome Forum

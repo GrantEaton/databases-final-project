@@ -87,13 +87,7 @@ app.get('/inbox', (req, res) => {
 
 app.get('/create', (req, res) => {
 
-  res.render('create', {
-
-    type: req.query.type || 'post',
-
-    topic: req.query.topic || ''
-
-  });
+  res.render('create', {query: req.query});
 
 });
 

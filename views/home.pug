@@ -2,13 +2,48 @@ extends layout.pug
 
 block content
   .container
-    .list-group
-      each post in posts
-        .list-group-item
-          a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) #{post.post_title}
-          p.list-group-item-text #{post.post_text.substring(0, 100)}...
-          p.list-group-item-text 
-            | username &middot; #{post.date_created.fromNow()} in 
-            a(href='/topic/'+post.topic_id) topic 
-            | &middot; 33 replies
+    .row
+      .col-md-8
+        .panel.panel-default
+          .panel-heading Recently Replied
+          .list-group
+            each post in posts
+              +post(post)
               
+      .col-md-4
+        .panel.panel-default
+          .panel-heading Forum Stats
+          table.table.table-bordered
+            tr
+              td(style='padding-left: 20px') Topics
+              td.text-center 15
+            tr
+              td(style='padding-left: 20px') Posts
+              td.text-center 100
+            tr
+              td(style='padding-left: 20px') Users
+              td.text-center 30
+
+        .panel.panel-default
+          .panel-heading New Posts
+          .list-group
+            each post in posts.slice(0, 3)
+              .list-group-item
+                a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) 
+                  strong #{post.post_title.substring(0, 40)}...
+                  
+        .panel.panel-default
+          .panel-heading New Topics
+          .list-group
+            each val in [1, 2, 3]
+              .list-group-item
+                a.list-group-item-heading(href='/topic/1') 
+                  strong Topic
+                  
+        .panel.panel-default
+          .panel-heading New Users
+          .list-group
+            each val in [1, 2, 3]
+              .list-group-item
+                a.list-group-item-heading(href='/user/1') 
+                  strong User
