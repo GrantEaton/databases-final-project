@@ -10,7 +10,6 @@ block content
       li.active(style='padding-left: 5px') #{topic.topic_name}
       
     .row
-      
       .col-md-8
         .panel.panel-success
           .panel-heading Stickied Posts
@@ -22,11 +21,12 @@ block content
             +post(post)
       
       .col-md-4
+        a.btn.btn-primary.btn-block(role='button', href='/create?type=post&topic='+topic.topic_name) Create a post in #{topic.topic_name}
+        br
         .panel.panel-default
           .panel-heading Topic Information
           .panel-body
-            a.btn.btn-primary.btn-block(role='button', href='/create?type=post&topic='+topic.topic_name) Create a post in #{topic.topic_name}
-            h3 #{topic.topic_name}
-            p Created on #{topic.date_created} by #{topic.topic_creator}
+            h3(style='margin-top: 0') #{topic.topic_name}
+            p Created on #{topic.date_created.format('MMMM d, Y')} by #{topic.topic_creator}
             p #{topic.topic_description}
-            a.btn.btn-default.btn-block(role='button', href='/create?type=topic') Create your own topic
+        a.btn.btn-default.btn-block(role='button', href='/create?type=topic') Create your own topic

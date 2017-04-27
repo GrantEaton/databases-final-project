@@ -22,7 +22,13 @@ function getTopic(id) {
 
     if (!topic) reject('topic not found');
 
-    else resolve(topic);
+    else {
+
+      topic = Object.assign({}, topic, {date_created: moment.unix(topic.date_created)});
+
+      resolve(topic);
+
+    }
 
   });
 

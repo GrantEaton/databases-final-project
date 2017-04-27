@@ -28,7 +28,7 @@ app.get('/topic/:topic', (req, res) => {
     .then(topic => {
 
       payload.topic = topic;
-
+      
       return api.getPostsByTopic(id);
 
     })
@@ -81,7 +81,7 @@ app.get('/profile', (req, res) => {
 
 app.get('/inbox', (req, res) => {
 
-  res.render('inbox');
+  res.render('inbox', {query: req.query});
 
 });
 

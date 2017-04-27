@@ -3,12 +3,13 @@ extends layout.pug
 block content
   .container
 
+    - folder = query.folder || 'inbox'
     ul.nav.nav-tabs
-      li.active
+      li(class=(folder == 'inbox' ? 'active' : ''))
         a(href='?folder=inbox') Inbox
-      li
+      li(class=(folder == 'sent' ? 'active' : ''))
         a(href='?folder=sent') Sent
-      li
+      li(class=(folder == 'archive' ? 'active' : ''))
         a(href='?folder=archive') Archive
       a.btn.btn-primary.pull-right(href='/create?type=message') Send Message
         

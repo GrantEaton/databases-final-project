@@ -2,15 +2,17 @@ extends layout.pug
 
 block content
   .container
+    
+    - type = query.type || 'post'
     ul.nav.nav-tabs
-      li(class=(query.type == 'post') ? 'active' : '')
+      li(class=(type == 'post') ? 'active' : '')
         a(href='?type=post') Post
-      li(class=(query.type == 'topic') ? 'active' : '')
+      li(class=(type == 'topic') ? 'active' : '')
         a(href='?type=topic') Topic
-      li(class=(query.type == 'message') ? 'active' : '')
+      li(class=(type == 'message') ? 'active' : '')
         a(href='?type=message') Message
         
-    if query.type == 'post'
+    if type == 'post'
       br
       form
         .form-group
@@ -24,7 +26,7 @@ block content
           textarea.form-control(rows='10')
         button.btn.btn-primary Create Post
     
-    else if query.type == 'message'
+    else if type == 'message'
       br
       form
         .form-group
@@ -38,7 +40,7 @@ block content
           textarea.form-control(rows='10')
         button.btn.btn-primary Send Message
         
-    else if query.type == 'topic'
+    else if type == 'topic'
       br
       form
         .form-group
