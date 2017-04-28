@@ -1,8 +1,16 @@
 extends layout.pug
 
-mixin message(message)
+mixin message(message, folder)
   .list-group-item
     h4.list-group-item-heading #{message.subject}
+    if folder == 'sent'
+      h5 sent to 
+        a(href='/user/'+message.recipient.user_id) #{message.recipient.username} 
+        | #{message.date.fromNow()}
+    else
+      h5 received from 
+        a(href='/user/'+message.sender.user_id) #{message.sender.username} 
+        | #{message.date.fromNow()}
     p.list-group-item-text #{message.text}
 
 
@@ -23,8 +31,8 @@ block content
   .list-group
     if folder == 'inbox'
       each message in received
-        +message(message)
+        +message(message, folder)
     else if folder == 'sent'
       each message in sent
-        +message(message)
+        +message(message, folder)
   

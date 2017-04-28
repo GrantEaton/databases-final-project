@@ -17,45 +17,37 @@ let users = mock_users.map(user => {
 
 });
 
-let replies = mock_replies.map(reply => {
-
-  let user = users.find(user => user.user_id == reply.user_id);
-
-  let date = moment.unix(reply.date_created);
-
-  let text = marked(reply.text);
-
-  return Object.assign({}, reply, {user, date, text});
-
-});
-
-let posts = mock_posts.map(post => {
-
-  let post_replies = replies
-    .filter(reply => reply.post_id == post.post_id)
-    .sort((a, b) => b.date_created - a.date_created);
-
-  let text = marked(post.text);
-
-  let topic = mock_topics.find(topic => topic.topic_id == post.topic_id);
-
-  let user = users.find(user => user.user_id == post.user_id);
-
-  let date = moment.unix(post.date_created);
-
-  return Object.assign({}, post, {replies: post_replies, text, topic, user, date});
-
-});
-
 let topics = mock_topics.map(topic => {
-
-  let topic_posts = posts.filter(post => post.topic_id == topic.topic_id);
 
   let user = users.find(user => user.user_id == topic.user_id);
 
   let date = moment(topic.date_created, 'M/D/YYYY');
 
-  return Object.assign({}, topic, {posts: topic_posts, user, date});
+  return Object.assign({}, topic, {user, date});
+
+});
+
+let posts = mock_posts.map(post => {
+
+  let topic = topics.find(topic => topic.topic_id == post.topic_id);
+
+  let user = users.find(user => user.user_id == post.user_id);
+
+  let date = moment.unix(post.date_created);
+
+  return Object.assign({}, post, {topic, user, date});
+
+});
+
+let replies = mock_replies.map(reply => {
+
+  let post = posts.find(post => post.post_id == reply.post_id);
+
+  let user = users.find(user => user.user_id == reply.user_id);
+
+  let date = moment.unix(reply.date_created);
+
+  return Object.assign({}, reply, {user, date});
 
 });
 
@@ -70,7 +62,6 @@ let messages = mock_messages.map(message => {
   return Object.assign({}, message, {sender, recipient, date});
 
 });
-
 
 module.exports = {
 
@@ -93,7 +84,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
 
       let newUsers = users
-        .sort((a, b) => b.date_created - a.date_created)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit);
 
       resolve(newUsers);
@@ -117,7 +108,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
 
       let newTopics = topics
-        .sort((a, b) => b.date_created - a.date_created)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit);
 
       resolve(newTopics);
@@ -144,15 +135,16 @@ module.exports = {
 
     return new Promise((resolve, reject) => {
 
-      let topic = topics.find(({topic_id}) => topic_id == topicId);
-
-      if (!topic) reject('topic not found');
-
       let post = posts.find(({post_id}) => post_id == postId);
 
-      if (!post || post.topic_id != topic.topic_id) reject('post not found');
+      if (!post || post.topic_id != topicId) reject('post not found');
 
-      else resolve(post);
+      else resolve(Object.assign({}, post, {replies:
+
+        replies.filter(reply => reply.post_id == post.post_id)
+          .sort((a, b) => b.date - a.date)
+
+      }));
 
     });
 
@@ -163,7 +155,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
 
       let newPosts = posts
-        .sort((a, b) => b.date_created - a.date_created)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit);
 
       resolve(newPosts);
@@ -177,6 +169,16 @@ module.exports = {
     return new Promise((resolve, reject) => {
 
       let activePosts = posts
+        .map(post =>
+
+          Object.assign({}, post, {replies:
+
+            replies.filter(reply => reply.post_id == post.post_id)
+              .sort((a, b) => b.date - a.date)
+
+          })
+
+        )
         .sort((a, b) => {
 
           let dateA = a.replies.length ? a.replies[0].date_created : 0;
@@ -194,13 +196,37 @@ module.exports = {
 
   },
 
+  getNewestPostsByTopic(id, limit) {
+
+    return new Promise((resolve, reject) => {
+
+      resolve(posts
+        .filter(post => post.topic_id == id)
+        .map(post =>
+
+          Object.assign({}, post, {replies:
+
+            replies.filter(reply => reply.post_id == post.post_id)
+              .sort((a, b) => b.date - a.date)
+
+          })
+
+        )
+        .sort((a, b) => b.date - a.date)
+        .slice(0, limit)
+      );
+
+    });
+
+  },
+
   getPostsByTopic(id, limit) {
 
     return new Promise((resolve, reject) => {
 
       resolve(posts
         .filter(post => post.topic_id == id)
-        .sort((a, b) => b.date_created - a.date_created)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit)
       );
 
@@ -214,7 +240,7 @@ module.exports = {
 
       resolve(topics
         .filter(topic => topic.user_id == id)
-        .sort((a, b) => b.date_created - a.date_created)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit)
       );
 
@@ -228,7 +254,31 @@ module.exports = {
 
       resolve(posts
         .filter(post => post.user_id == id)
-        .sort((a, b) => b.date_created - a.date_created)
+        .map(post =>
+
+          Object.assign({}, post, {replies:
+
+            replies.filter(reply => reply.post_id == post.post_id)
+              .sort((a, b) => b.date - a.date)
+
+          })
+
+        )
+        .sort((a, b) => b.date - a.date)
+        .slice(0, limit)
+      );
+
+    });
+
+  },
+
+  getRepliesByPost(id, limit) {
+
+    return new Promise((resolve, reject) => {
+
+      resolve(replies
+        .filter(reply => reply.post_id == id)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit)
       );
 
@@ -242,7 +292,7 @@ module.exports = {
 
       resolve(replies
         .filter(reply => reply.user_id == id)
-        .sort((a, b) => b.date_created - a.date_created)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit)
       );
 
@@ -256,7 +306,7 @@ module.exports = {
 
       resolve(messages
         .filter(message => message.sender_id == id)
-        .sort((a, b) => b.date_created - a.date_created)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit)
       );
 
@@ -270,9 +320,93 @@ module.exports = {
 
       resolve(messages
         .filter(message => message.recipient_id == id)
-        .sort((a, b) => b.date_created - a.date_created)
+        .sort((a, b) => b.date - a.date)
         .slice(0, limit)
       );
+
+    });
+
+  },
+
+  createTopic({name, description, user_id}) {
+
+    return new Promise((resolve, reject) => {
+
+      let user = users.find(user => user.user_id == user_id);
+
+      let topic_id = topics.length+1;
+
+      let topic = {topic_id, name, description, user, date: moment()};
+
+      topics.push(topic);
+
+      resolve(topic);
+
+    });
+
+  },
+
+  createPost({topic: topicName, title, text, user_id}) {
+
+    return new Promise((resolve, reject) => {
+
+      let topic = topics.find(topic => topicName.toLowerCase() == topic.name.toLowerCase());
+
+      if (!topic) reject('topic not found');
+
+      let user = users.find(user => user.user_id == user_id);
+
+      let post_id = posts.length+1;
+
+      let topic_id = topic.topic_id;
+
+      let post = {post_id, topic_id, title, text, topic, user, date: moment()};
+
+      posts.push(post);
+
+      resolve(post);
+
+    });
+
+  },
+
+  createReply({post_id, user_id, text}) {
+
+    return new Promise((resolve, reject) => {
+
+      let post = posts.find(post => post.post_id == post_id);
+
+      let user = users.find(user => user.user_id == user_id);
+
+      let reply_id = replies.length+1;
+
+      let reply = {reply_id, post_id, text, post, user, date: moment()};
+
+      replies.push(reply);
+
+      resolve(reply);
+
+    });
+
+  },
+
+  createMessage({to, subject, text, user_id}) {
+
+    return new Promise((resolve, reject) => {
+
+      let sender = users.find(user => user.user_id == user_id);
+
+      let recipient = users.find(user => user.username.toLowerCase() == to.toLowerCase());
+
+      if (!recipient) reject('user not found');
+
+      let message_id = messages.length+1;
+
+      let message = {message_id, sender_id: user_id, recipient_id: recipient.user_id, subject, text, sender, recipient, date: moment()};
+
+      messages.push(message);
+
+      resolve(message);
 
     });
 

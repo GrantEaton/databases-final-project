@@ -1,11 +1,19 @@
 const path = require('path');
 const express = require('express');
+const bodyParser = require('body-parser');
 const api = require('./api/api');
 
 let app = express();
 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
+
+app.use('/create', require('./routes/create'));
+app.use('/topic', require('./routes/topic'));
 
 app.get('/', (req, res) => {
 
@@ -18,38 +26,6 @@ app.get('/', (req, res) => {
     .catch(message => {
 
       res.render('not-found', {message});
-
-    });
-
-});
-
-app.get('/topic/:topic', (req, res) => {
-
-  api.getTopic(req.params.topic)
-    .then(topic => {
-
-      res.render('topic', {topic});
-
-    })
-    .catch(message => {
-
-      res.render('not-found', {message});
-
-    });
-
-});
-
-app.get('/topic/:topic/post/:post', (req, res) => {
-
-  api.getPost(req.params.topic, req.params.post)
-    .then(post => {
-
-      res.render('post', {post});
-
-    })
-    .catch(message => {
-
-      res.render('not-found', {message})
 
     });
 
@@ -108,12 +84,6 @@ app.get('/inbox', (req, res) => {
       res.render('not-found', {message})
 
     });
-
-});
-
-app.get('/create', (req, res) => {
-
-  res.render('create', {query: req.query});
 
 });
 

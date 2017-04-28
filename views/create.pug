@@ -1,7 +1,16 @@
 extends layout.pug
 
 block content  
-  - type = query.type || 'post'
+  
+  if message
+    .alert.alert-success
+      strong Message sent to #{message.recipient.username}!
+  
+  if error
+    .alert.alert-danger
+      strong #{error}
+  
+  - type = form.type || 'post'
   ul.nav.nav-tabs
     li(class=(type == 'post') ? 'active' : '')
       a(href='?type=post') Post
@@ -12,39 +21,39 @@ block content
       
   if type == 'post'
     br
-    form
+    form(action='/create?type=post',method='post')
       .form-group
         label Topic
-        input.form-control(value=(query.topic || ''))
+        input.form-control(name='topic',value=(form.topic || ''))
       .form-group
         label Title
-        input.form-control
+        input.form-control(name='title',value=(form.title || ''))
       .form-group
         label Text
-        textarea.form-control(rows='10')
+        textarea.form-control(name='text',rows='10',value=(form.text || ''))
       button.btn.btn-primary Create Post
   
   else if type == 'message'
     br
-    form
+    form(action='/create?type=message',method='post')
       .form-group
         label To
-        input.form-control(value=(query.to || ''))
+        input.form-control(name='to',value=(form.to || ''))
       .form-group
         label Subject
-        input.form-control
+        input.form-control(name='subject',value=(form.subject || ''))
       .form-group
         label Text
-        textarea.form-control(rows='10')
+        textarea.form-control(name='text',rows='10',value=(form.text || ''))
       button.btn.btn-primary Send Message
       
   else if type == 'topic'
     br
-    form
+    form(action='/create?type=topic',method='post')
       .form-group
         label Name
-        input.form-control(value=topic)
+        input.form-control(name='name',value=(form.topic || ''))
       .form-group
         label Description
-        textarea.form-control(rows='10')
+        textarea.form-control(name='description',rows='10',value=(form.description || ''))
       button.btn.btn-primary Create Topic

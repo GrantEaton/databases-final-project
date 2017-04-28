@@ -13,6 +13,7 @@
     "url": "git+https://github.com/GrantEaton/databases_final_project.git"
   },
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "marked": "^0.3.6",
     "moment": "^2.18.1",

@@ -13,10 +13,10 @@ block content
       .panel.panel-success
         .panel-heading Stickied Posts
         .list-group
-          each post in topic.posts.slice(0, 2)
+          each post in posts.slice(0, 2)
             +post(post)
       .list-group
-        each post in topic.posts
+        each post in posts
           +post(post)
     
     .col-md-4
