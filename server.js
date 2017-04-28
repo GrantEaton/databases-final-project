@@ -1,6 +1,5 @@
 const path = require('path');
 const express = require('express');
-
 const api = require('./api/api');
 
 let app = express();
@@ -10,33 +9,26 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.get('/', (req, res) => {
 
-  api.getActivePosts(20).then(posts => {
+  Promise.all([api.getActivePosts(20), api.getNewPosts(3), api.getNewTopics(3), api.getNewUsers(3)])
+    .then(([posts, newPosts, newTopics, newUsers]) => {
 
-    res.render('home', {posts});
+      res.render('home', {posts, newPosts, newTopics, newUsers});
 
-  });
+    })
+    .catch(message => {
+
+      res.render('not-found', {message});
+
+    });
 
 });
 
 app.get('/topic/:topic', (req, res) => {
 
-  let id = req.params.topic;
-
-  let payload = {};
-
-  api.getTopic(id)
+  api.getTopic(req.params.topic)
     .then(topic => {
 
-      payload.topic = topic;
-      
-      return api.getPostsByTopic(id);
-
-    })
-    .then(posts => {
-
-      payload.posts = posts;
-
-      res.render('topic', payload);
+      res.render('topic', {topic});
 
     })
     .catch(message => {
@@ -49,14 +41,10 @@ app.get('/topic/:topic', (req, res) => {
 
 app.get('/topic/:topic/post/:post', (req, res) => {
 
-  let topicId = req.params.topic;
+  api.getPost(req.params.topic, req.params.post)
+    .then(post => {
 
-  let postId = req.params.post;
-
-  api.getPost(topicId, postId)
-    .then(({topic, post}) => {
-
-      res.render('post', {topic, post});
+      res.render('post', {post});
 
     })
     .catch(message => {
@@ -75,7 +63,35 @@ app.get('/login', (req, res) => {
 
 app.get('/profile', (req, res) => {
 
-  res.render('profile');
+  Promise.all([api.getUser(1), api.getPostsByUser(1), api.getTopicsByUser(1)])
+    .then(([user, posts, topics]) => {
+
+      res.render('user', {user, posts, topics});
+
+    })
+    .catch(message => {
+
+      res.render('not-found', {message})
+
+    });
+
+});
+
+app.get('/user/:user', (req, res) => {
+
+  let id = req.params.user;
+
+  Promise.all([api.getUser(id), api.getPostsByUser(id, 3), api.getRepliesByUser(id, 3), api.getTopicsByUser(id)])
+    .then(([user, posts, replies, topics]) => {
+
+      res.render('user', {user, posts, replies, topics});
+
+    })
+    .catch(message => {
+
+      res.render('not-found', {message})
+
+    });
 
 });
 

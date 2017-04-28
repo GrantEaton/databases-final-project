@@ -1,0 +1,42 @@
+extends layout.pug
+
+block content
+    
+  .container
+    .panel.panel-default
+      .panel-heading User Information
+      .panel-body
+        .row
+          .col-xs-2
+            img.img-circle.center-block(src='https://placehold.it/128/'+colors[user.user_id%5]+'/fff?text='+user.username.toUpperCase()[0])
+          .col-xs-10
+            form
+              .form-group
+                label Username
+                input(disabled, value=user.username).form-control
+              .form-group
+                label Email Address
+                input(disabled, value=user.email_address).form-control
+              button.btn.btn-primary Change Password
+    
+    .panel.panel-default
+      .panel-heading Topics Created
+      .list-group
+        if topics.length
+          each topic in topics
+            .list-group-item
+              a.list-group-item-heading(href='/topic/'+topic.topic_id) #{topic.name}
+        else
+          .list-group-item
+            .text-center This user has not created any topics
+            
+
+    .panel.panel-default
+      .panel-heading Newest Posts
+      .list-group
+        if posts.length
+          each post in posts
+            +post(post)
+        else
+          .list-group-item
+            .text-center This user has not created any posts

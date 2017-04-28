@@ -27,23 +27,20 @@ block content
         .panel.panel-default
           .panel-heading New Posts
           .list-group
-            each post in posts.slice(0, 3)
+            each post in newPosts
               .list-group-item
-                a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) 
-                  strong #{post.post_title.substring(0, 40)}...
+                a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) #{post.title.substring(0, 40)}...
                   
         .panel.panel-default
           .panel-heading New Topics
           .list-group
-            each val in [1, 2, 3]
+            each topic in newTopics
               .list-group-item
-                a.list-group-item-heading(href='/topic/1') 
-                  strong Topic
+                a.list-group-item-heading(href='/topic/'+topic.topic_id) #{topic.name}
                   
         .panel.panel-default
           .panel-heading New Users
           .list-group
-            each val in [1, 2, 3]
+            each user in newUsers
               .list-group-item
-                a.list-group-item-heading(href='/user/1') 
-                  strong User
+                a.list-group-item-heading(href='/user/'+user.user_id) #{user.username}
