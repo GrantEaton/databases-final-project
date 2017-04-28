@@ -10,15 +10,22 @@ block content
           .panel-body
             if profile
               form
+                button.btn.btn-primary.pull-right Edit Profile
                 .form-group
                   label Username
-                  input(disabled, value=user.username).form-control
+                  p #{user.username}
                 .form-group
                   label Email Address
-                  input(disabled, value=user.email_address).form-control
-                button.btn.btn-primary Change Settings
+                  p #{user.email_address}
+                .form-group
+                  label Joined
+                  p #{user.date.format('MMMM d, YYYY')}
+                .form-group
+                  label Biography
+                  p #{user.biography}
             else
               form
+                a.btn.btn-primary.pull-right(href='/create?type=message&to='+user.username) Send a message to #{user.username}
                 .form-group
                   label Username
                   p #{user.username}
@@ -28,7 +35,9 @@ block content
                 .form-group
                   label Last seen 
                   p #{user.login.format('MMMM d, YYYY')}
-                a.btn.btn-primary(href='/create?type=message&to='+user.username) Send a message
+                .form-group
+                  label Biography
+                  p #{user.biography}
                 
       .col-md-6
     
