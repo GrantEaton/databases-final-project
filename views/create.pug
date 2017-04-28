@@ -1,52 +1,50 @@
 extends layout.pug
 
-block content
-  .container
-    
-    - type = query.type || 'post'
-    ul.nav.nav-tabs
-      li(class=(type == 'post') ? 'active' : '')
-        a(href='?type=post') Post
-      li(class=(type == 'topic') ? 'active' : '')
-        a(href='?type=topic') Topic
-      li(class=(type == 'message') ? 'active' : '')
-        a(href='?type=message') Message
-        
-    if type == 'post'
-      br
-      form
-        .form-group
-          label Topic
-          input.form-control(value=(query.topic || ''))
-        .form-group
-          label Title
-          input.form-control
-        .form-group
-          label Text
-          textarea.form-control(rows='10')
-        button.btn.btn-primary Create Post
-    
-    else if type == 'message'
-      br
-      form
-        .form-group
-          label To
-          input.form-control(value=(query.to || ''))
-        .form-group
-          label Subject
-          input.form-control
-        .form-group
-          label Text
-          textarea.form-control(rows='10')
-        button.btn.btn-primary Send Message
-        
-    else if type == 'topic'
-      br
-      form
-        .form-group
-          label Name
-          input.form-control(value=topic)
-        .form-group
-          label Description
-          textarea.form-control(rows='10')
-        button.btn.btn-primary Create Topic
+block content  
+  - type = query.type || 'post'
+  ul.nav.nav-tabs
+    li(class=(type == 'post') ? 'active' : '')
+      a(href='?type=post') Post
+    li(class=(type == 'topic') ? 'active' : '')
+      a(href='?type=topic') Topic
+    li(class=(type == 'message') ? 'active' : '')
+      a(href='?type=message') Message
+      
+  if type == 'post'
+    br
+    form
+      .form-group
+        label Topic
+        input.form-control(value=(query.topic || ''))
+      .form-group
+        label Title
+        input.form-control
+      .form-group
+        label Text
+        textarea.form-control(rows='10')
+      button.btn.btn-primary Create Post
+  
+  else if type == 'message'
+    br
+    form
+      .form-group
+        label To
+        input.form-control(value=(query.to || ''))
+      .form-group
+        label Subject
+        input.form-control
+      .form-group
+        label Text
+        textarea.form-control(rows='10')
+      button.btn.btn-primary Send Message
+      
+  else if type == 'topic'
+    br
+    form
+      .form-group
+        label Name
+        input.form-control(value=topic)
+      .form-group
+        label Description
+        textarea.form-control(rows='10')
+      button.btn.btn-primary Create Topic

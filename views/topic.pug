@@ -2,32 +2,31 @@ extends layout.pug
 
 block content
   
-  .container
-  
-    ol.breadcrumb
-      li
-        a(href='/') Home
-      li.active(style='padding-left: 5px') #{topic.name}
-      
-    .row
-      .col-md-8
-        .panel.panel-success
-          .panel-heading Stickied Posts
-          .list-group
-            each post in topic.posts.slice(0, 2)
-              +post(post)
+  ol.breadcrumb
+    li
+      a(href='/') Home
+    li.active(style='padding-left: 5px') #{topic.name}
+    
+  .row
+    
+    .col-md-8
+      .panel.panel-success
+        .panel-heading Stickied Posts
         .list-group
-          each post in topic.posts
+          each post in topic.posts.slice(0, 2)
             +post(post)
-      
-      .col-md-4
-        a.btn.btn-primary.btn-block(role='button', href='/create?type=post&topic='+topic.name) Create a post in #{topic.name}
-        br
-        .panel.panel-default
-          .panel-heading Topic Information
-          .panel-body
-            h3(style='margin-top: 0') #{topic.name}
-            p #{topic.description}
-            p Created on #{topic.date.format('MMMM D, YYYY')} by 
-              a(href='/user/'+topic.user_id) #{topic.user.username}
-        a.btn.btn-default.btn-block(role='button', href='/create?type=topic') Create your own topic
+      .list-group
+        each post in topic.posts
+          +post(post)
+    
+    .col-md-4
+      a.btn.btn-primary.btn-block(role='button', href='/create?type=post&topic='+topic.name) Create a post in #{topic.name}
+      br
+      .panel.panel-default
+        .panel-heading Topic Information
+        .panel-body
+          h3(style='margin-top: 0') #{topic.name}
+          p #{topic.description}
+          p Created on #{topic.date.format('MMMM D, YYYY')} by 
+            a(href='/user/'+topic.user_id) #{topic.user.username}
+      a.btn.btn-default.btn-block(role='button', href='/create?type=topic') Create your own topic

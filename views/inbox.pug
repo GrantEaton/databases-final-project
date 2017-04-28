@@ -7,25 +7,24 @@ mixin message(message)
 
 
 block content
-  .container
 
-    - folder = query.folder || 'inbox'
-    ul.nav.nav-tabs
-      li(class=(folder == 'inbox' ? 'active' : ''))
-        a(href='?folder=inbox') Inbox
-      li(class=(folder == 'sent' ? 'active' : ''))
-        a(href='?folder=sent') Sent
-      li(class=(folder == 'archive' ? 'active' : ''))
-        a(href='?folder=archive') Archive
-      a.btn.btn-primary.pull-right(href='/create?type=message') Send Message
-        
-    br
-    
-    .list-group
-      if folder == 'inbox'
-        each message in received
-          +message(message)
-      else if folder == 'sent'
-        each message in sent
-          +message(message)
+  - folder = query.folder || 'inbox'
+  ul.nav.nav-tabs
+    li(class=(folder == 'inbox' ? 'active' : ''))
+      a(href='?folder=inbox') Inbox
+    li(class=(folder == 'sent' ? 'active' : ''))
+      a(href='?folder=sent') Sent
+    li(class=(folder == 'archive' ? 'active' : ''))
+      a(href='?folder=archive') Archive
+    a.btn.btn-primary.pull-right(href='/create?type=message') Send Message
+      
+  br
+  
+  .list-group
+    if folder == 'inbox'
+      each message in received
+        +message(message)
+    else if folder == 'sent'
+      each message in sent
+        +message(message)
   

@@ -1,63 +1,63 @@
 extends layout.pug
 
 block content
+  
+  .row
     
-  .container
-    .row
-      .col-md-6
-        .panel.panel-default
-          .panel-heading User Information
-          .panel-body
-            if profile
-              form
-                button.btn.btn-primary.pull-right Edit Profile
-                .form-group
-                  label Username
-                  p #{user.username}
-                .form-group
-                  label Email Address
-                  p #{user.email_address}
-                .form-group
-                  label Joined
-                  p #{user.date.format('MMMM D, YYYY')}
-                .form-group
-                  label Biography
-                  p #{user.biography}
-            else
-              form
-                a.btn.btn-primary.pull-right(href='/create?type=message&to='+user.username) Send a message to #{user.username}
-                .form-group
-                  label Username
-                  p #{user.username}
-                .form-group
-                  label Joined
-                  p #{user.date.format('MMMM D, YYYY')}
-                .form-group
-                  label Last seen 
-                  p #{user.login.format('MMMM D, YYYY')}
-                .form-group
-                  label Biography
-                  p #{user.biography}
-                
-      .col-md-6
-    
-        .panel.panel-default
-          .panel-heading Topics Created
-          .list-group
-            if topics.length
-              each topic in topics
-                .list-group-item
-                  a.list-group-item-heading(href='/topic/'+topic.topic_id) #{topic.name}
-            else
+    .col-md-6
+      .panel.panel-default
+        .panel-heading User Information
+        .panel-body
+          if profile
+            form
+              button.btn.btn-primary.pull-right Edit Profile
+              .form-group
+                label Username
+                p #{user.username}
+              .form-group
+                label Email Address
+                p #{user.email_address}
+              .form-group
+                label Joined
+                p #{user.date.format('MMMM D, YYYY')}
+              .form-group
+                label Biography
+                p #{user.biography}
+          else
+            form
+              a.btn.btn-primary.pull-right(href='/create?type=message&to='+user.username) Send a message to #{user.username}
+              .form-group
+                label Username
+                p #{user.username}
+              .form-group
+                label Joined
+                p #{user.date.format('MMMM D, YYYY')}
+              .form-group
+                label Last seen 
+                p #{user.login.format('MMMM D, YYYY')}
+              .form-group
+                label Biography
+                p #{user.biography}
+              
+    .col-md-6
+  
+      .panel.panel-default
+        .panel-heading Topics Created
+        .list-group
+          if topics.length
+            each topic in topics
               .list-group-item
-                .text-center This user has not created any topics  
+                a.list-group-item-heading(href='/topic/'+topic.topic_id) #{topic.name}
+          else
+            .list-group-item
+              .text-center This user has not created any topics  
 
-        .panel.panel-default
-          .panel-heading Newest Posts
-          .list-group
-            if posts.length
-              each post in posts
-                +post(post)
-            else
-              .list-group-item
-                .text-center This user has not created any posts
+      .panel.panel-default
+        .panel-heading Newest Posts
+        .list-group
+          if posts.length
+            each post in posts
+              +post(post)
+          else
+            .list-group-item
+              .text-center This user has not created any posts

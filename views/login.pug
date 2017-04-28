@@ -1,40 +1,42 @@
 extends layout.pug
 
 block content
-  .container
-    .row
-      .col-xs-7
-        .panel.panel-default
-          .panel-heading
-            span Sign up for an account
-          .panel-body
-            form.center-block
-              .form-group
-                label Username
-                input.form-control
-              .form-group
-                label Email Address
-                input.form-control
-              .form-group
-                label Confirm Email Address
-                input.form-control
-              .form-group
-                label Password
-                input.form-control
-              .form-group
-                label Confirm Password
-                input.form-control
-            button.btn.btn-primary.pull-right Signup
-      .col-xs-5
-        .panel.panel-default
-          .panel-heading
-            span Log in
-          .panel-body
-            form.center-block
-              .form-group
-                label Username
-                input.form-control
-              .form-group
-                label Password
-                input.form-control
-            button.btn.btn-primary.pull-right Login
+  
+  .row
+    
+    .col-xs-7
+      .panel.panel-default
+        .panel-heading
+          span Sign up for an account
+        .panel-body
+          form.center-block
+            .form-group
+              label Username
+              input.form-control
+            .form-group
+              label Email Address
+              input.form-control
+            .form-group
+              label Confirm Email Address
+              input.form-control
+            .form-group
+              label Password
+              input.form-control
+            .form-group
+              label Confirm Password
+              input.form-control
+          button.btn.btn-primary.pull-right Signup
+          
+    .col-xs-5
+      .panel.panel-default
+        .panel-heading
+          span Log in
+        .panel-body
+          form.center-block
+            .form-group
+              label Username
+              input.form-control
+            .form-group
+              label Password
+              input.form-control
+          button.btn.btn-primary.pull-right Login

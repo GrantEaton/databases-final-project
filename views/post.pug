@@ -2,36 +2,33 @@ extends layout.pug
 
 block content
   
-  .container
-  
-    ol.breadcrumb
-      li
-        a(href='/') Home
-      li(style='padding-left: 5px')
-        a(href='/topic/' + post.topic_id) #{post.topic.name}
-      li(style='padding-left: 5px').active #{post.title}
-      
-    h3 #{post.title}
-    h5 By 
-      a(href='/user/'+post.user_id) #{post.user.username} 
-      | on #{post.date.format('MMMM D, YYYY')} at #{post.date.format('hh:mm A')}    
-    p #{post.text}
+  ol.breadcrumb
+    li
+      a(href='/') Home
+    li(style='padding-left: 5px')
+      a(href='/topic/' + post.topic_id) #{post.topic.name}
+    li(style='padding-left: 5px').active #{post.title}
     
-    hr
-        
-    form
-      .form-group
-        textarea.form-control(rows=5, placeholder='Send a reply...')
-      button.btn.btn-primary Submit Reply
-      span.pull-right 0 / 1000 
+  h3 #{post.title}
+  h5 By 
+    a(href='/user/'+post.user_id) #{post.user.username} 
+    | on #{post.date.format('MMMM D, YYYY')} at #{post.date.format('h:mm A')}    
+  p #{post.text}
+  hr
       
-    .panel.panel-default
-      .panel-heading Replies    
-      .list-group
-        each reply in post.replies
-          .list-group-item
-            span #{reply.text}
-            br
-            span 
-              a(href='/users/'+reply.user_id) #{reply.user.username} 
-              span  &middot; #{reply.date.fromNow()}
+  form
+    .form-group
+      textarea.form-control(rows=5, placeholder='Send a reply...')
+    button.btn.btn-primary Submit Reply
+    span.pull-right 0 / 1000 
+    
+  .panel.panel-default
+    .panel-heading Replies    
+    .list-group
+      each reply in post.replies
+        .list-group-item
+          span #{reply.text}
+          br
+          span 
+            a(href='/users/'+reply.user_id) #{reply.user.username} 
+            span  &middot; #{reply.date.fromNow()}
