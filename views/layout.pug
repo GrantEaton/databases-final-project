@@ -19,17 +19,17 @@ html
         .navbar-header
           a.navbar-brand(href='/') Awesome Forum
         ul.nav.navbar-nav.navbar-right
-          li.dropdown
-            a.dropdown-toggle(href='#', data-toggle='dropdown') username 
-              span.caret
-            ul.dropdown-menu
-              li
-                a(href='/profile') Profile
-                a(href='/inbox') Inbox
-                a(href='/login') Log out
-          li
-            - let colors = ['f44336','E91E63','9C27B0','673AB7','3F51B5','2196F3','009688']
-            img.img-circle(src='https://placehold.it/32/'+colors[0]+'/fff?text='+'U',style='padding: 9px')
+          if true
+            li
+              a(href='/profile') Profile
+            li
+              a(href='/inbox') Inbox
+            li
+              a(href='/login') Log out
+          else
+            li
+              a(href='/login') Log in
+              
     .container-fluid
       block content
     script(src='https://code.jquery.com/jquery-3.2.1.min.js')

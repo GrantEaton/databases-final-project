@@ -66,7 +66,7 @@ app.get('/profile', (req, res) => {
   Promise.all([api.getUser(1), api.getPostsByUser(1), api.getTopicsByUser(1)])
     .then(([user, posts, topics]) => {
 
-      res.render('user', {user, posts, topics});
+      res.render('user', {user, posts, topics, profile: true});
 
     })
     .catch(message => {
@@ -97,7 +97,17 @@ app.get('/user/:user', (req, res) => {
 
 app.get('/inbox', (req, res) => {
 
-  res.render('inbox', {query: req.query});
+  Promise.all([api.getMessagesReceivedByUser(1, 10), api.getMessagesSentByUser(1, 10)])
+    .then(([received, sent]) => {
+
+      res.render('inbox', {query: req.query, received, sent});
+
+    })
+    .catch(message => {
+
+      res.render('not-found', {message})
+
+    });
 
 });
 

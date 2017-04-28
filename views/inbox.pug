@@ -1,5 +1,11 @@
 extends layout.pug
 
+mixin message(message)
+  .list-group-item
+    h4.list-group-item-heading #{message.subject}
+    p.list-group-item-text #{message.text}
+
+
 block content
   .container
 
@@ -16,15 +22,10 @@ block content
     br
     
     .list-group
-      each val in [1,2,3,4,5,6,7,8,9,10]
-        a.list-group-item(href="/inbox/1")
-          h4.list-group-item-heading Message subject goes here
-          p.list-group-item-text Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat...
-        
-    .row
-      .col-xs-4.col-xs-offset-4
-        ul.pagination.center-block
-            each page in [1,2,3,4]
-              li
-                a(href='?page='+page) #{page}
+      if folder == 'inbox'
+        each message in received
+          +message(message)
+      else if folder == 'sent'
+        each message in sent
+          +message(message)
   

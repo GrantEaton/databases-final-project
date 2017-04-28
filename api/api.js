@@ -6,7 +6,15 @@ const mock_posts = require('../mock/posts.json');
 const mock_replies = require('../mock/replies.json');
 const mock_messages = require('../mock/messages.json');
 
-let users = [...mock_users];
+let users = mock_users.map(user => {
+
+  user.date = moment.unix(user.date_created);
+
+  user.login = moment.unix(user.last_login);
+
+  return user;
+
+});
 
 let replies = mock_replies.map(reply => {
 
