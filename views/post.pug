@@ -13,7 +13,7 @@ block content
   h5 By 
     a(href='/user/'+post.user_id) #{post.user.username} 
     | on #{post.date.format('MMMM D, YYYY')} at #{post.date.format('h:mm A')}    
-  p #{post.text}
+  != post.text
   hr
       
   form
@@ -27,8 +27,7 @@ block content
     .list-group
       each reply in post.replies
         .list-group-item
-          span #{reply.text}
-          br
+          != reply.text
           span 
             a(href='/users/'+reply.user_id) #{reply.user.username} 
             span  &middot; #{reply.date.fromNow()}

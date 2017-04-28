@@ -1,4 +1,5 @@
 const moment = require('moment');
+const marked = require('marked');
 
 const mock_users = require('../mock/users.json');
 const mock_topics = require('../mock/topics.json');
@@ -8,61 +9,65 @@ const mock_messages = require('../mock/messages.json');
 
 let users = mock_users.map(user => {
 
-  user.date = moment.unix(user.date_created);
+  let date = moment.unix(user.date_created);
 
-  user.login = moment.unix(user.last_login);
+  let login = moment.unix(user.last_login);
 
-  return user;
+  return Object.assign({}, user, {date, login});
 
 });
 
 let replies = mock_replies.map(reply => {
 
-  reply.user = users.find(user => user.user_id == reply.user_id);
+  let user = users.find(user => user.user_id == reply.user_id);
 
-  reply.date = moment.unix(reply.date_created);
+  let date = moment.unix(reply.date_created);
 
-  return reply;
+  let text = marked(reply.text);
+
+  return Object.assign({}, reply, {user, date, text});
 
 });
 
 let posts = mock_posts.map(post => {
 
-  post.replies = replies
+  let post_replies = replies
     .filter(reply => reply.post_id == post.post_id)
     .sort((a, b) => b.date_created - a.date_created);
 
-  post.topic = mock_topics.find(topic => topic.topic_id == post.topic_id);
+  let text = marked(post.text);
 
-  post.user = users.find(user => user.user_id == post.user_id);
+  let topic = mock_topics.find(topic => topic.topic_id == post.topic_id);
 
-  post.date = moment.unix(post.date_created);
+  let user = users.find(user => user.user_id == post.user_id);
 
-  return post;
+  let date = moment.unix(post.date_created);
+
+  return Object.assign({}, post, {replies: post_replies, text, topic, user, date});
 
 });
 
 let topics = mock_topics.map(topic => {
 
-  topic.posts = posts.filter(post => post.topic_id == topic.topic_id);
+  let topic_posts = posts.filter(post => post.topic_id == topic.topic_id);
 
-  topic.user = users.find(user => user.user_id == topic.user_id);
+  let user = users.find(user => user.user_id == topic.user_id);
 
-  topic.date = moment(topic.date_created, 'M/D/YYYY');
+  let date = moment(topic.date_created, 'M/D/YYYY');
 
-  return topic;
+  return Object.assign({}, topic, {posts: topic_posts, user, date});
 
 });
 
 let messages = mock_messages.map(message => {
 
-  message.sender = users.find(user => user.user_id == message.sender_id);
+  let sender = users.find(user => user.user_id == message.sender_id);
 
-  message.recipient = users.find(user => user.user_id == message.recipient_id);
+  let recipient = users.find(user => user.user_id == message.recipient_id);
 
-  message.date = moment.unix(message.date_created);
+  let date = moment.unix(message.date_created);
 
-  return message;
+  return Object.assign({}, message, {sender, recipient, date});
 
 });
 
