@@ -6,9 +6,9 @@ block content
     .col-md-8
       
       .panel.panel-default
-        .panel-heading Recently Replied
+        .panel-heading Active Posts
         .list-group
-          each post in posts
+          each post in activePosts
             +post(post)
             
     .col-md-4
@@ -18,18 +18,18 @@ block content
         .list-group
           each post in newPosts
             .list-group-item
-              a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) #{post.title.substring(0, 40)}...
+              a.list-group-item-heading(href='/posts/'+post.id) #{post.title}
                 
       .panel.panel-default
         .panel-heading Newest Topics
         .list-group
           each topic in newTopics
             .list-group-item
-              a.list-group-item-heading(href='/topic/'+topic.topic_id) #{topic.name}
+              a.list-group-item-heading(href='/topics/'+topic.id) #{topic.name}
                 
       .panel.panel-default
         .panel-heading Newest Users
         .list-group
           each user in newUsers
             .list-group-item
-              a.list-group-item-heading(href='/user/'+user.user_id) #{user.username}
+              a.list-group-item-heading(href='/users/'+user.id) #{user.username}

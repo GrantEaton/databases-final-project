@@ -1,20 +1,21 @@
-extends layout.pug
-
-mixin message(message, folder)
+mixin message(message, folder, canDelete)
   .list-group-item
-    h4.list-group-item-heading #{message.subject}
     if folder == 'sent'
-      h5 sent to 
-        a(href='/user/'+message.recipient.user_id) #{message.recipient.username} 
+      small sent to 
+        a(href='/users/'+message.recipient.id) #{message.recipient.username} 
         | #{message.date.fromNow()}
     else
-      h5 received from 
-        a(href='/user/'+message.sender.user_id) #{message.sender.username} 
+      small received from 
+        a(href='/users/'+message.sender.id) #{message.sender.username} 
         | #{message.date.fromNow()}
-    p.list-group-item-text #{message.text}
-
-
-block content
+      if canDelete
+        form.pull-right(action='/messages/'+message.id+'/delete',method='post')
+          button.btn.btn-warning.btn-sm Archive
+    h4.list-group-item-heading #{message.subject}
+    .list-group-item-text 
+      != message.text
+      
+.login-required
 
   - folder = query.folder || 'inbox'
   ul.nav.nav-tabs
@@ -27,12 +28,19 @@ block content
     a.btn.btn-primary.pull-right(href='/create?type=message') Send Message
       
   br
-  
+
   .list-group
     if folder == 'inbox'
       each message in received
-        +message(message, folder)
+        +message(message, folder, true)
     else if folder == 'sent'
       each message in sent
         +message(message, folder)
+    else if folder == 'archive'
+      each message in archived
+        +message(message, folder)
+      
+.logout-required
+  h3 You must be logged in to view your profile
+  a.btn.btn-primary(href='/login') Login
   

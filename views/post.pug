@@ -6,29 +6,57 @@ block content
     li
       a(href='/') Home
     li(style='padding-left: 5px')
-      a(href='/topic/' + topic.topic_id) #{topic.name}
+      a(href='/topics/' + post.topic.id) #{post.topic.name}
     li(style='padding-left: 5px').active #{post.title}
     
   h3 #{post.title}
   h5 By 
-    a(href='/user/'+post.user_id) #{post.user.username} 
+    a(href='/users/'+post.user.id) #{post.user.username} 
     | on #{post.date.format('MMMM D, YYYY')} at #{post.date.format('h:mm A')}    
-  != post.text
+  != post.text.md
   hr
       
-  form(method='post')
+  form.login-required(action='/posts/'+post.id+'/replies',method='post')
+    input(hidden,name='post',value=post.id)
     .form-group
       textarea.form-control(name='text',rows=5, placeholder='Send a reply...')
     button.btn.btn-primary Submit Reply
-    span.pull-right 0 / 1000 
     
   .panel.panel-default
     .panel-heading Replies    
     .list-group
-      each reply in post.replies
+      each reply in replies
         .list-group-item
           span 
-            a(href='/users/'+reply.user_id) #{reply.user.username} 
+            a(href='/users/'+reply.user.id) #{reply.user.username} 
             span  &middot; #{reply.date.fromNow()}
           .reply-text
             != reply.text
+            
+  .login-required.panel.panel-default
+    .panel-heading Edit Post
+    .panel-body
+      form(action='/posts/'+post.id,method='post')
+        input(hidden,name='post',value=post.id)
+        .form-group
+          label Visibility
+          br
+          input(type='checkbox',name='stickied',checked=post.stickied)
+          |  Stickied
+        .form-group
+          label Topic
+          select.form-control(name='topic')
+            each topic in topics
+              option(value=topic.id,selected=(topic.id == post.topic.id)) #{topic.name}
+        .form-group
+          label Title
+          input.form-control(name='title',value=(post.title || ''))
+        .form-group
+          label Text
+          textarea.form-control(name='text',rows='10') #{post.text.raw}
+        button.btn.btn-primary Update Post
+        
+  form.login-required(action='/posts/'+post.id+'/delete',method='post')
+    input(hidden,name='id',value=post.id)
+    button.btn.btn-danger.btn-block Delete Post
+          

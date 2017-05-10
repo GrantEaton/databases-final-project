@@ -1,38 +1,41 @@
 mixin post(post)
   .list-group-item
-    a.list-group-item-heading(href='/topic/'+post.topic_id+'/post/'+post.post_id) 
+    a.list-group-item-heading(href='/posts/'+post.id) 
       strong #{post.title}
     p.list-group-item-text 
-      a(href='/user/'+post.user_id) #{post.user.username}
+      a(href='/users/'+post.user.id) #{post.user.username}
       |  &middot; #{post.date.fromNow()} in 
-      a(href='/topic/'+post.topic_id) #{post.topic.name}
-      |  &middot; #{post.replies.length} replies
+      a(href='/topics/'+post.topic.id) #{post.topic.name}
+      |  &middot; #{post.replies} replies
 
 html
   head
     title Awesome Forum
     meta(name='viewport', content='width=device-width,initial-scale=1,user-scalable=0')
     link(rel='stylesheet', href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+    link(rel='stylesheet', href="/global.css")
   body
     .navbar.navbar-inverse.navbar-static-top
       .container-fluid
         .navbar-header
           a.navbar-brand(href='/') Awesome Forum
-        ul.nav.navbar-nav.navbar-right
-          if true
-            li
-              a(href='/profile') Profile
-            li
-              a(href='/inbox') Inbox
-            li
-              a(href='/login') Log out
-          else
-            li
-              a(href='/login') Log in
+        ul.nav.navbar-nav.navbar-right.login-required
+          li
+            a(href='/profile') Profile
+          li
+            a(href='/inbox') Inbox
+          li
+            a(href='/logout') Log out
+        ul.nav.navbar-nav.navbar-right.logout-required
+          li
+            a(href='/login') Log in
               
     .container
       block content
     script(src='https://code.jquery.com/jquery-3.2.1.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js')
+    script(src='/auth.js')
     block scripts
+    if request
+      script(src=request)

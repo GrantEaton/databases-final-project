@@ -9,51 +9,61 @@ block content
   if error
     .alert.alert-danger
       strong #{error}
-  
-  - type = form.type || 'post'
-  ul.nav.nav-tabs
-    li(class=(type == 'post') ? 'active' : '')
-      a(href='?type=post') Post
-    li(class=(type == 'topic') ? 'active' : '')
-      a(href='?type=topic') Topic
-    li(class=(type == 'message') ? 'active' : '')
-      a(href='?type=message') Message
       
-  if type == 'post'
-    br
-    form(action='/create?type=post',method='post')
-      .form-group
-        label Topic
-        input.form-control(name='topic',value=(form.topic || ''))
-      .form-group
-        label Title
-        input.form-control(name='title',value=(form.title || ''))
-      .form-group
-        label Text
-        textarea.form-control(name='text',rows='10',value=(form.text || ''))
-      button.btn.btn-primary Create Post
+  .login-required 
   
-  else if type == 'message'
+    - type = form.type || 'post'
+    ul.nav.nav-tabs
+      li(class=(type == 'topic') ? 'active' : '')
+        a(href='?type=topic') Topic
+      li(class=(type == 'post') ? 'active' : '')
+        a(href='?type=post') Post
+      li(class=(type == 'message') ? 'active' : '')
+        a(href='?type=message') Message
+        
     br
-    form(action='/create?type=message',method='post')
-      .form-group
-        label To
-        input.form-control(name='to',value=(form.to || ''))
-      .form-group
-        label Subject
-        input.form-control(name='subject',value=(form.subject || ''))
-      .form-group
-        label Text
-        textarea.form-control(name='text',rows='10',value=(form.text || ''))
-      button.btn.btn-primary Send Message
+        
+    if type == 'topic'
+      form(action='/topics',method='post')
+        .form-group
+          label Name
+          input.form-control(name='name',value=(form.topic || ''))
+        .form-group
+          label Description
+          textarea.form-control(name='description',rows='10',value=(form.description || ''))
+        button.btn.btn-primary Create Topic
+        
+    else if type == 'post'
+      form(action='/posts',method='post')
+        .form-group
+          label Topic
+          select.form-control(name='topic')
+            each topic in topics
+              option(value=topic.id,selected=(topic.name == form.topic)) #{topic.name}
+        .form-group
+          label Title
+          input.form-control(name='title',value=(form.title || ''))
+        .form-group
+          label Text
+          textarea.form-control(name='text',rows='10',value=(form.text || ''))
+        button.btn.btn-primary Create Post
+    
+    else if type == 'message'
+      form(action='/messages',method='post')
+        .form-group
+          label To
+          select.form-control(name='recipient')
+            each user in users
+              option(value=user.id,selected=(user.username == form.to)) #{user.username}
+        .form-group
+          label Subject
+          input.form-control(name='subject',value=(form.subject || ''))
+        .form-group
+          label Text
+          textarea.form-control(name='text',rows='10',value=(form.text || ''))
+        button.btn.btn-primary Send Message
       
-  else if type == 'topic'
-    br
-    form(action='/create?type=topic',method='post')
-      .form-group
-        label Name
-        input.form-control(name='name',value=(form.topic || ''))
-      .form-group
-        label Description
-        textarea.form-control(name='description',rows='10',value=(form.description || ''))
-      button.btn.btn-primary Create Topic
+  .logout-required
+    h3 You must login to create a topic, post, or message
+    a.btn.btn-primary(href='/login') Login
+  

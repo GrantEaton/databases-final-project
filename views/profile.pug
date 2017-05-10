@@ -1,0 +1,83 @@
+.login-required
+  
+  .row
+    
+    .col-md-6
+    
+      .panel.panel-default
+        .panel-heading User Information
+        .panel-body
+          form
+            .form-group
+              label Username
+              p #{user.username}
+            .form-group
+              label Joined
+              p #{user.date.format('MMMM D, YYYY')}
+            .form-group
+              label Biography
+              != user.bio.md
+      
+      .panel.panel-default
+        .panel-heading Edit Profile
+        .panel-body
+            form(action='/profile',method='post')
+              input(hidden,name='user',value=user.id)
+              .form-group
+                label Username
+                input.form-control(name='username',value=user.username)
+              .form-group
+                label Email Address
+                input.form-control(name='email',value=user.email)
+              .form-group
+                label Biography
+                textarea.form-control(name='biography',rows='10') #{user.bio.raw}
+              button.btn.btn-primary Save Changes
+              
+      .panel.panel-default
+        .panel-heading Change Password
+        .panel-body
+          form(action='/profile/password',method='post')
+            input(hidden,name='user',value=user.id)
+            .form-group
+              label Old Password
+              input.form-control(name='oldpassword',type='password')
+            .form-group
+              label New Password
+              input.form-control(name='newpassword',type='password')
+            .form-group
+              label Confirm Password
+              input.form-control(type='password')
+            button.btn.btn-primary Update Password
+            
+      form.login-required(action='/users/'+user.id+'/delete',method='post')
+        input(hidden,name='id',value=user.id)
+        button.btn.btn-danger.btn-block Delete Account
+            
+    .col-md-6
+
+      .panel.panel-default
+        .panel-heading Topics Created
+        .list-group
+          if topics.length
+            each topic in topics
+              .list-group-item
+                a.list-group-item-heading(href='/topics/'+topic.id) #{topic.name}
+          else
+            .list-group-item
+              .text-center This user has not created any topics  
+
+      .panel.panel-default
+        .panel-heading Newest Posts
+        .list-group
+          if posts.length
+            each post in posts
+              .list-group-item
+                a.list-group-item-heading(href='/posts/'+post.id) #{post.title}
+          else
+            .list-group-item
+              .text-center This user has not created any posts
+            
+.logout-required
+  h3 You must be logged in to view your profile
+  a.btn.btn-primary(href='/login') Login

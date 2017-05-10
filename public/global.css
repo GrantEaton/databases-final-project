@@ -1,0 +1,16 @@
+
+.login-required  {
+  display: none;
+}
+
+body.authed .login-required {
+  display: block;
+}
+
+.logout-required {
+  display: block;
+}
+
+body.authed .logout-required {
+  display: none;
+}

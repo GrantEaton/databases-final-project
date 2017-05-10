@@ -9,3 +9,4 @@ node_modules
 # files
 
 .DS_Store
+config.js

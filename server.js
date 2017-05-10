@@ -1,33 +1,113 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const api = require('./api/api');
+const pug = require('pug');
+const db = require('./database');
 
 let app = express();
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'));
-
-app.use('/create', require('./routes/create'));
-app.use('/topic', require('./routes/topic'));
+app.use('/users', require('./routes/users'));
+app.use('/topics', require('./routes/topics'));
+app.use('/posts', require('./routes/posts'));
+app.use('/messages', require('./routes/messages'));
 
 app.get('/', (req, res) => {
 
-  Promise.all([api.getActivePosts(20), api.getNewPosts(3), api.getNewTopics(3), api.getNewUsers(3)])
-    .then(([posts, newPosts, newTopics, newUsers]) => {
+  Promise.all([db.getActivePosts(20), db.getNewPosts(3), db.getNewTopics(3), db.getNewUsers(3)])
+    .then(([activePosts, newPosts, newTopics, newUsers]) => {
 
-      res.render('home', {posts, newPosts, newTopics, newUsers});
+      res.render('home', {activePosts, newPosts, newTopics, newUsers});
 
     })
-    .catch(message => {
+    .catch(error => {
 
-      res.render('not-found', {message});
+      res.render('error', {error});
 
     });
+
+});
+
+app.get('/profile', (req, res) => {
+
+  res.render('layout', {request: 'profile.js'})
+
+})
+
+app.post('/profile', (req, res) => {
+
+  db.updateUser(req.body)
+    .then(user => {
+      res.redirect('/profile')
+    })
+    .catch(error => res.render('error', {error}))
+
+})
+
+app.post('/profile/password', (req, res) => {
+
+  db.updateUserPassword(req.body)
+    .then(success => {
+      res.redirect('/profile')
+    })
+    .catch(error => res.render('error', {error}))
+
+})
+
+app.get('/profile/:user', (req, res) => {
+
+  let id = req.params.user
+
+  Promise.all([db.getUser(id), db.getTopicsByUser(id, 10), db.getPostsByUser(id, 10), db.getRepliesByUser(id, 3)])
+    .then(([user, topics, posts, replies]) => {
+
+      let html = pug.renderFile('./views/profile.pug',
+
+        {user, topics, posts, replies, profile: true}
+
+      )
+
+      res.json({html})
+
+    })
+
+})
+
+app.get('/inbox', (req, res) => {
+
+  res.render('layout', {request: 'inbox.js'})
+
+})
+
+app.get('/inbox/:user', (req, res) => {
+
+  let id = req.params.user
+
+  Promise.all([db.getMessagesSentByUser(id, 10), db.getMessagesReceivedByUser(id, 10), db.getMessagesDeletedByUser(id, 10)])
+    .then(([sent, received, archived]) => {
+
+      let html = pug.renderFile('./views/inbox.pug', {sent, received, archived, query: req.query})
+
+      res.json({html})
+
+    })
+
+})
+
+app.get('/create', (req, res) => {
+
+  Promise.all([db.getTopics(), db.getUsers()])
+    .then(([topics, users]) => {
+
+      res.render('create', {form: req.query, topics, users})
+
+    })
 
 });
 
@@ -37,59 +117,27 @@ app.get('/login', (req, res) => {
 
 });
 
-app.get('/profile', (req, res) => {
+app.get('/logout', (req, res) => {
 
-  Promise.all([api.getUser(1), api.getPostsByUser(1), api.getTopicsByUser(1)])
-    .then(([user, posts, topics]) => {
-
-      res.render('user', {user, posts, topics, profile: true});
-
-    })
-    .catch(message => {
-
-      res.render('not-found', {message})
-
-    });
+  res.render('logout');
 
 });
 
-app.get('/user/:user', (req, res) => {
+app.post('/login', (req, res) => {
 
-  let id = req.params.user;
+  db.createLoginAttempt(req.body)
+    .then(user => {
 
-  Promise.all([api.getUser(id), api.getPostsByUser(id, 3), api.getRepliesByUser(id, 3), api.getTopicsByUser(id)])
-    .then(([user, posts, replies, topics]) => {
-
-      res.render('user', {user, posts, replies, topics});
+      res.json(user)
 
     })
-    .catch(message => {
+    .catch(error => res.render('error', {error}))
 
-      res.render('not-found', {message})
-
-    });
-
-});
-
-app.get('/inbox', (req, res) => {
-
-  Promise.all([api.getMessagesReceivedByUser(1, 10), api.getMessagesSentByUser(1, 10)])
-    .then(([received, sent]) => {
-
-      res.render('inbox', {query: req.query, received, sent});
-
-    })
-    .catch(message => {
-
-      res.render('not-found', {message})
-
-    });
-
-});
+})
 
 app.get('*', (req, res) => {
 
-  res.render('not-found', {message: 'page not found'});
+  res.render('error', {error: 'page not found'});
 
 });
 
