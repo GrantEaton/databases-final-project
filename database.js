@@ -92,7 +92,7 @@ function mapMessage(record) {
 
 function logResult(proc) {
   return function(result) {
-    console.log(proc, result);
+    //console.log(proc, result);
     return result;
   }
 }

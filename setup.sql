@@ -552,7 +552,7 @@ BEGIN
   FROM Posts p
    JOIN Topics t ON p.TopicID = t.TopicID
    JOIN Users u ON p.UserID = u.UserID
-   JOIN Replies r ON p.PostID = r.PostID
+   LEFT JOIN Replies r ON p.PostID = r.PostID
   WHERE t.TopicID = @topicId AND p.Deleted = 0 AND p.Stickied = 0
   GROUP BY p.PostID, p.Title, p.Text, p.DateCreated, t.TopicID, t.Name, u.UserID, u.Username
   ORDER BY p.DateCreated DESC
